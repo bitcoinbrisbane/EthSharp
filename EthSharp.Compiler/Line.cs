@@ -1,4 +1,4 @@
-namespace EthSharp
+namespace EthSharp.Compiler
 {
     public class Line
     {
@@ -12,6 +12,10 @@ namespace EthSharp
     public enum LineType
     {
         PRAGMA,
-        BEGIN_CONTRACT
+        BEGIN_CONTRACT,
+
+        BEGIN_STRUCT,
+
+        BEGIN_FUNCTION,
     }
 }

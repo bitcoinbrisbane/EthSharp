@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using Xunit;
 
-namespace EthSharp
+namespace EthSharp.Compiler.Tests
 {
     public class CompilerTests
     {

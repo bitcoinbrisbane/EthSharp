@@ -1,6 +1,6 @@
 using System;
 
-namespace EthSharp
+namespace EthSharp.Compiler
 {
     public class Contract
     {
