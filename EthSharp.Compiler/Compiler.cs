@@ -1,45 +1,64 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
 namespace EthSharp.Compiler
 {
     public class Compiler
     {
+        public Stack Lines { get; set; }
+
+        public IList<Contract> Contracts { get; set; }
+
         public Boolean Compile(String file)
         {
-            GetLines(file);
-
+            Parse(file);
             return true;
         }
 
-        public Stack Parse(String file)
+        public void Parse(String file)
         {
-            Stack lines = new Stack();
+            this.Lines = new Stack();
+            this.Contracts = new List<Contract>();
+
             Int32 i = 0;
             foreach (string line in File.ReadLines(file))
             {
-                if (line.Contains("pragma"))
+                if (String.IsNullOrWhiteSpace(line))
+                {
+                    Line x = new Line() { Number = i, LineType = LineType.WHITE_SPACE };
+                    Lines.Push(x);
+                }
+
+                if (line.Trim().Contains("pragma"))
                 {
                     Line x = new Line() { Number = i, LineType = LineType.PRAGMA };
-                    lines.Push(x);
-                    i++;
+                    Lines.Push(x);
                 }
 
-                if (line.Contains("contract"))
+                if (line.Trim().Contains("contract"))
                 {
                     Line x = new Line() { Number = i, LineType = LineType.BEGIN_CONTRACT };
-                    lines.Push(x);
-                    i++;
+                    Lines.Push(x);
                 }
 
-                if (line.Contains("function"))
+                if (line.Trim().Contains("function"))
                 {
                     Line x = new Line() { Number = i, LineType = LineType.BEGIN_FUNCTION };
-                    lines.Push(x);
-                    i++;
+                    Lines.Push(x);
                 }
+
+                if (line.Trim().StartsWith("}"))
+                {
+                    Line x = new Line() { Number = i, LineType = LineType.END };
+                    Lines.Push(x);
+                }
+
+                i++;
             }
 
-            return lines;
+            
         }
     }
 }

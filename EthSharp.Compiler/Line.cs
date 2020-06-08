@@ -17,5 +17,13 @@ namespace EthSharp.Compiler
         BEGIN_STRUCT,
 
         BEGIN_FUNCTION,
+
+        END,
+
+        END_CONTRACT,
+
+        END_FUNCTION,
+
+        WHITE_SPACE
     }
 }
