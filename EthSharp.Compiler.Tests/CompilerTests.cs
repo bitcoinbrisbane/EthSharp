@@ -12,6 +12,8 @@ namespace EthSharp.Compiler.Tests
         {
             Compiler c = new Compiler();
             c.Compile("Adder.sol");
+
+            Assert.Equal(7, c.Lines.Count);
         }
     }
 }

@@ -13,4 +13,13 @@
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EthSharp.Compiler\EthSharp.Compiler.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Adder.sol">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content> 
+  </ItemGroup>
 </Project>
