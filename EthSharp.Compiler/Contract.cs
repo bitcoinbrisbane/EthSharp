@@ -11,5 +11,9 @@ namespace EthSharp.Compiler
         public Line[] Lines { get; set; }
 
         public Byte[] Compiled { get; set; }
+
+        public Int32 StartLineNumber { get; set; }
+
+        public Int32 EndLineNumber { get; set; }
     }
 }

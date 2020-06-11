@@ -8,6 +8,18 @@ namespace EthSharp.Compiler
 
         public String Access { get; set; }
 
-        
+        public DataType DataType { get; set; }
+    }
+
+    public enum FunctionType 
+    {
+        PURE,
+        VIEW
+    }
+
+    public enum DataType
+    {
+        uint8,
+        uint256
     }
 }
