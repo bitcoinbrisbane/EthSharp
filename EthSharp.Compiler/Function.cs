@@ -7,5 +7,7 @@ namespace EthSharp.Compiler
         public String Name { get; set; }
 
         public String Access { get; set; }
+
+        
     }
 }
