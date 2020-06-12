@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EthSharp.Compiler
 {
@@ -26,13 +27,85 @@ namespace EthSharp.Compiler
 
         public IList<Function> GetFunctions()
         {
-            var functionLines = Lines.Where(x => x.Data.Trim().StartsWith("function"));
-            return new List<Function>();
+            List<Function> functions = new List<Function>();
+            Function functionToAdd = new Function();
+
+            Int32 leftBraceCount = 0;
+            Int32 rightBraceCount = 0;
+
+            Boolean inFunctionBlock = false;
+            
+            foreach(Line line in this.Lines)
+            {
+                if (line.Data.Trim().StartsWith("function"))
+                {
+                    inFunctionBlock = true;
+                    functionToAdd = new Function();
+
+                }
+
+                if (inFunctionBlock)
+                {
+                    Regex leftBraceRegex = new Regex("{");
+                    MatchCollection leftBrachMatches = leftBraceRegex.Matches(line.Data);
+
+                    leftBraceCount += leftBrachMatches.Count;
+
+                    Regex rightBraceRegex = new Regex("}");
+                    MatchCollection rightBrachMatches = leftBraceRegex.Matches(line.Data);
+
+                    rightBraceCount += rightBrachMatches.Count;
+
+                    if (rightBraceCount == leftBraceCount)
+                    {
+                        functions.Add(functionToAdd);
+                        inFunctionBlock = false;
+
+                        functionToAdd = null;
+                    }
+                }
+            }
+
+            return functions;
+        }
+
+        public String GetFunctionNameFromLine(String line)
+        {
+            String[] words = line.Trim().Split(' ');
+            if (words[0] == "function")
+            {
+                return words[1].Trim();
+            }
+
+            return "";
         }
 
         public IList<Function> GetFunctions(Contract contract)
         {
-            var functionLines = Lines.Where(x => x.Data.Trim().StartsWith("function"));
+            var functionLine = contract.Lines.First(x => x.Data.Trim().StartsWith("function"));
+
+            Int32 leftBraceCount = 0;
+            Int32 rightBraceCount = 0;
+            
+            foreach(Line line in contract.Lines)
+            {
+                Regex leftBraceRegex = new Regex("{");
+                MatchCollection leftBrachMatches = leftBraceRegex.Matches(line.Data);
+
+                leftBraceCount += leftBrachMatches.Count;
+
+                Regex rightBraceRegex = new Regex("}");
+                MatchCollection rightBrachMatches = leftBraceRegex.Matches(line.Data);
+
+                rightBraceCount += rightBrachMatches.Count;
+
+                if (rightBraceCount == leftBraceCount)
+                {
+                    Function function = new Function();
+
+                }   
+            }
+
             return new List<Function>();
         }
 

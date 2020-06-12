@@ -44,5 +44,17 @@ namespace EthSharp.Compiler.Tests
             Assert.NotNull(c.Contract);
             Assert.Equal("Adder", c.Contract.Name);
         }
+
+        [Fact]
+        public void Should_Get_Function()
+        {
+            Compiler c = new Compiler();
+            c.Compile("Adder.sol");
+
+            Assert.NotNull(c.Contract);
+            
+            var functions = c.GetFunctions();
+            Assert.Equal(1, functions.Count);
+        }
     }
 }
