@@ -7,13 +7,6 @@ using System.Text.RegularExpressions;
 
 namespace EthSharp.Compiler
 {
-
-    public enum Tokens
-    {
-        // +,
-        // -
-    }
-
     public class Compiler
     {
         public IList<Line> Lines { get; set; }
@@ -30,8 +23,8 @@ namespace EthSharp.Compiler
             List<Function> functions = new List<Function>();
             Function functionToAdd = new Function();
 
-            Int32 leftBraceCount = 0;
-            Int32 rightBraceCount = 0;
+            Int32 LBraceCount = 0;
+            Int32 RBraceCount = 0;
 
             Boolean inFunctionBlock = false;
             
@@ -41,7 +34,7 @@ namespace EthSharp.Compiler
                 {
                     inFunctionBlock = true;
                     functionToAdd = new Function();
-
+                    functionToAdd.Name = GetFunctionNameFromLine(line.Data);
                 }
 
                 if (inFunctionBlock)
@@ -49,14 +42,14 @@ namespace EthSharp.Compiler
                     Regex leftBraceRegex = new Regex("{");
                     MatchCollection leftBrachMatches = leftBraceRegex.Matches(line.Data);
 
-                    leftBraceCount += leftBrachMatches.Count;
+                    LBraceCount += leftBrachMatches.Count;
 
                     Regex rightBraceRegex = new Regex("}");
                     MatchCollection rightBrachMatches = leftBraceRegex.Matches(line.Data);
 
-                    rightBraceCount += rightBrachMatches.Count;
+                    RBraceCount += rightBrachMatches.Count;
 
-                    if (rightBraceCount == leftBraceCount)
+                    if (RBraceCount == LBraceCount)
                     {
                         functions.Add(functionToAdd);
                         inFunctionBlock = false;
@@ -102,7 +95,7 @@ namespace EthSharp.Compiler
                 if (rightBraceCount == leftBraceCount)
                 {
                     Function function = new Function();
-
+                    function.Name = GetFunctionNameFromLine(line.Data);
                 }   
             }
 
@@ -151,36 +144,6 @@ namespace EthSharp.Compiler
             foreach (string line in File.ReadLines(file))
             {
                 Lines.Add(new Line(line) { Number = i + 1 });
-
-                // if (String.IsNullOrWhiteSpace(line))
-                // {
-                //     Line x = new Line() { Number = i, LineType = LineType.WHITE_SPACE };
-                //     Lines.Push(x);
-                // }
-
-                // if (line.Trim().Contains("pragma"))
-                // {
-                //     Line x = new Line() { Number = i, LineType = LineType.PRAGMA };
-                //     Lines.Push(x);
-                // }
-
-                // if (line.Trim().Contains("contract"))
-                // {
-                //     Line x = new Line() { Number = i, LineType = LineType.BEGIN_CONTRACT };
-                //     Lines.Push(x);
-                // }
-
-                // if (line.Trim().Contains("function"))
-                // {
-                //     Line x = new Line() { Number = i, LineType = LineType.BEGIN_FUNCTION };
-                //     Lines.Push(x);
-                // }
-
-                // if (line.Trim().StartsWith("}"))
-                // {
-                //     Line x = new Line() { Number = i, LineType = LineType.END };
-                //     Lines.Push(x);
-                // }
 
                 i++;
             }

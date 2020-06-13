@@ -55,6 +55,8 @@ namespace EthSharp.Compiler.Tests
             
             var functions = c.GetFunctions();
             Assert.Equal(1, functions.Count);
+
+            Assert.Equal("sum", functions[0].Name);
         }
     }
 }
