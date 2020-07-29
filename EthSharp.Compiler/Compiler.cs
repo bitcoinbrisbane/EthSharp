@@ -17,7 +17,6 @@ namespace EthSharp.Compiler
         {
             get; private set;
         }
-
         public IList<Function> GetFunctions()
         {
             List<Function> functions = new List<Function>();
